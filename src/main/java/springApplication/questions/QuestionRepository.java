@@ -18,4 +18,6 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     @Query(
             value = "SELECT COUNT(q) FROM Question q WHERE q.seen = false")
     int getNumOfUnseenQuestions();
+
+    List<Question> findAllByCustomer(Customer customer);
 }
