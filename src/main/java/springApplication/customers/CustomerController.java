@@ -11,46 +11,40 @@ import java.util.UUID;
 public class CustomerController {
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @GetMapping("/")
-    public String home(){
-        return "Home page";
-    }
+    private CustomerService customerService;
 
     @GetMapping("/customers")
     public List<Customer> getAllCustomers(){
-        return customerRepository.findAll();
+        return customerService.findAll();
     }
 
     @GetMapping("/customers/lastCustomer")
     public Customer getLastCustomer(){
-//        System.out.println("Customer: " + customerRepository.findLastCustomer());
-        return customerRepository.findLastCustomer();
+        return customerService.findLastCustomer();
     }
 
     @GetMapping("/customers/{customerId}")
     public Customer getCustomer(@PathVariable UUID customerId){
-        return customerRepository.findById(customerId);
+        return customerService.findById(customerId);
     }
 
     @PostMapping("/customers")
     public void addCustomer(@RequestBody Customer customer){
-        customerRepository.save(customer);
+        customerService.saveCustomer(customer);
     }
 
     @PutMapping("/customers/{personId}")
     public void updateCustomer(@RequestBody Customer customer){
-        Customer updatedCustomer = customerRepository.findById(customer.getId());
+        Customer updatedCustomer = customerService.findById(customer.getId());
         customer.setFirstName(customer.getFirstName());
         customer.setLastName(customer.getLastName());
 
-        customerRepository.save(updatedCustomer);
+        customerService.saveCustomer(updatedCustomer);
     }
 
     @DeleteMapping("/customers/{customerId}")
     public void deleteCustomer(@PathVariable UUID customerId){
-        Customer customer = customerRepository.findById(customerId);
-        customerRepository.delete(customer);
+        Customer customer = customerService.findById(customerId);
+        customerService.deleteCustomer(customer);
     }
 }
