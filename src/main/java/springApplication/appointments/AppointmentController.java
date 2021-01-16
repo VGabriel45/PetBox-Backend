@@ -16,54 +16,54 @@ import java.util.UUID;
 
 @RestController
 public class AppointmentController {
-    @Autowired
-    private AppointmentRepository appointmentRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @GetMapping("appointments")
     public List<Appointment> getAllAppointments(){
-        return appointmentRepository.findAll();
+        return appointmentService.getAllAppointments();
     }
 
     @GetMapping("customers/{customerId}/appointments")
     public List<Appointment> getAllAppointmentsByCustomer(@PathVariable UUID customerId){
-        return appointmentRepository.findAllByCustomerId(customerId);
+        Customer customer = customerRepository.findById(customerId);
+        return appointmentService.getAllAppointmentsByCustomer(customer);
     }
 
     @GetMapping("customers/{customerId}/appointments/{appointmentId}")
-    public Appointment getAppointment(@PathVariable UUID customerId, @PathVariable UUID appointmentId){
-        Customer customer = customerRepository.findById(customerId);
-        return appointmentRepository.findByCustomerAndAppointmentId(customer,appointmentId);
+    public Appointment getAppointment(@PathVariable UUID appointmentId){
+        return appointmentService.getAppointmentById(appointmentId);
     }
 
     @GetMapping("/customers/{customerId}/appointments/{appointmentId}/setSeen")
     public void markAsSeen(@PathVariable UUID appointmentId){
-        Appointment updatedAppointment = appointmentRepository.findById(appointmentId);
-        System.out.println(updatedAppointment);
+        Appointment updatedAppointment = appointmentService.getAppointmentById(appointmentId);
         updatedAppointment.setSeen(true);
-        appointmentRepository.save(updatedAppointment);
+        appointmentService.saveAppointment(updatedAppointment);
     }
 
     @GetMapping("/appointments/seen")
     public int getNumberOfUnseenAppointments() {
-        return appointmentRepository.getNumOfUnseenAppointments();
+        return appointmentService.getNumOfUnseenAppointments();
     }
 
     @GetMapping("/customers/{customerId}/appointments/{appointmentId}/accept")
     public void acceptAppointment(@PathVariable UUID appointmentId){
-        Appointment updatedAppointment = appointmentRepository.findById(appointmentId);
+        Appointment updatedAppointment = appointmentService.getAppointmentById(appointmentId);
         updatedAppointment.setAccepted(true);
         updatedAppointment.setDeclined(false);
-        appointmentRepository.save(updatedAppointment);
+        appointmentService.saveAppointment(updatedAppointment);
     }
 
     @GetMapping("/customers/{customerId}/appointments/{appointmentId}/decline")
     public void declineAppointment(@PathVariable UUID appointmentId){
-        Appointment updatedAppointment = appointmentRepository.findById(appointmentId);
+        Appointment updatedAppointment = appointmentService.getAppointmentById(appointmentId);
         updatedAppointment.setDeclined(true);
         updatedAppointment.setAccepted(false);
-        appointmentRepository.save(updatedAppointment);
+        appointmentService.saveAppointment(updatedAppointment);
     }
 }

@@ -20,4 +20,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     @Query(
             value = "SELECT COUNT(a) FROM Appointment a WHERE a.seen = false")
     int getNumOfUnseenAppointments();
+
+    List<Appointment> findAllByCustomerIs(Customer customer);
+
+    Appointment findAppointmentByCustomerIsAndIdIs(Customer customer, UUID appointmentId);
 }
