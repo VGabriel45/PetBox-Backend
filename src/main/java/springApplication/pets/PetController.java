@@ -18,20 +18,26 @@ public class PetController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private PetConverter petConverter;
+
     @GetMapping("pets")
-    public List<Pet> getAllPets(){
-        return petService.findAll();
+    public List<PetDto> getAllPets(){
+        List<Pet> pets = petService.findAll();
+        return petConverter.modelToDto(pets);
     }
 
     @GetMapping("customers/{customerId}/pets")
-    public List<Pet> getAllPetsByPerson(@PathVariable UUID customerId){
+    public List<PetDto> getAllPetsByPerson(@PathVariable UUID customerId){
         Customer customer = customerService.findById(customerId);
-        return petService.findAllByCustomerId(customer);
+        List<Pet> pets = petService.findAllByCustomerId(customer);
+        return petConverter.modelToDto(pets);
     }
 
     @GetMapping("customers/{customerId}/pets/{petId}")
-    public Pet getPet(@PathVariable UUID petId){
-        return petService.findById(petId);
+    public PetDto getPet(@PathVariable UUID petId){
+        Pet pet = petService.findById(petId);
+        return petConverter.modelToDto(pet);
     }
 
     @PostMapping("customers/{customerId}/pets")

@@ -1,25 +1,14 @@
 package springApplication.employees;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@Table(name = "employees")
-public class Employee {
-    @Id
-    @GeneratedValue
+public class EmployeeDto {
     private UUID id;
     private String firstName;
     private String lastName;
@@ -31,5 +20,4 @@ public class Employee {
     private Date contractStartingDate;
     private Date contractEndingDate;
     private String salary;
-
 }

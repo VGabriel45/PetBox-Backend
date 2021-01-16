@@ -11,14 +11,19 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private EmployeeConverter employeeConverter;
+
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees(){
-        return employeeService.findAll();
+    public List<EmployeeDto> getAllEmployees(){
+        List<Employee> employees = employeeService.findAll();
+        return employeeConverter.modelToDto(employees);
     }
 
     @GetMapping("/employees/{employeeId}")
-    public Employee getEmployee(@PathVariable UUID employeeId){
-        return employeeService.findById(employeeId);
+    public EmployeeDto getEmployee(@PathVariable UUID employeeId){
+        Employee employee = employeeService.findById(employeeId);
+        return employeeConverter.modelToDto(employee);
     }
 
     @PostMapping("/employees")
