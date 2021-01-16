@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerRepository;
+import springApplication.customers.CustomerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,47 +13,47 @@ import java.util.UUID;
 public class PetController {
 
     @Autowired
-    private PetRepository petRepository;
+    private PetService petService;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @GetMapping("pets")
     public List<Pet> getAllPets(){
-        return petRepository.findAll();
+        return petService.findAll();
     }
 
     @GetMapping("customers/{customerId}/pets")
     public List<Pet> getAllPetsByPerson(@PathVariable UUID customerId){
-        return petRepository.findAllByCustomerId(customerId);
+        Customer customer = customerService.findById(customerId);
+        return petService.findAllByCustomerId(customer);
     }
 
     @GetMapping("customers/{customerId}/pets/{petId}")
-    public Pet getPet(@PathVariable UUID petId, @PathVariable UUID customerId){
-        Customer customer = customerRepository.findById(customerId);
-        return petRepository.findByCustomerAndPetId(customer,petId);
+    public Pet getPet(@PathVariable UUID petId){
+        return petService.findById(petId);
     }
 
     @PostMapping("customers/{customerId}/pets")
     public void addPet(@RequestBody Pet pet, @PathVariable UUID customerId){
-        pet.setCustomer(customerRepository.findById(customerId));
-        petRepository.save(pet);
+        pet.setCustomer(customerService.findById(customerId));
+        petService.savePet(pet);
     }
 
     @PutMapping("/customers/{customerId}/pets/{petId}")
     public void updatePet(@PathVariable UUID petId, @RequestBody Pet pet){
-        Pet updatedPet = petRepository.findById(petId);
+        Pet updatedPet = petService.findById(petId);
         updatedPet.setName(pet.getName());
         updatedPet.setRace(pet.getRace());
         updatedPet.setCustomer(pet.getCustomer());
         updatedPet.setGender(pet.getGender());
 
-        petRepository.save(updatedPet);
+        petService.savePet(updatedPet);
     }
 
     @DeleteMapping("/customers/{customerId}/pets/{petId}")
     public void deletePet(@PathVariable UUID petId){
-        Pet pet = petRepository.findById(petId);
-        petRepository.delete(pet);
+        Pet pet = petService.findById(petId);
+        petService.deletePet(pet);
     }
 }

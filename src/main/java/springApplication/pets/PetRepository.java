@@ -19,4 +19,6 @@ public interface PetRepository extends JpaRepository<Pet, String> {
     @Query(
             value = "SELECT p FROM Pet p WHERE p.customer = :customer AND p.id = :petId")
     Pet findByCustomerAndPetId(@Param("customer") Customer customer, @Param("petId") UUID petId);
+
+    List<Pet> findAllByCustomer(Customer customer);
 }
