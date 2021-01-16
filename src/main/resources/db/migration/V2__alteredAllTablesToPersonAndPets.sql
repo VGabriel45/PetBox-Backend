@@ -1,0 +1,15 @@
+-- CREATE TABLE persons (
+--                         id UUID NOT NULL PRIMARY KEY ,
+--                         firstName VARCHAR(100),
+--                         lastName VARCHAR(100),
+-- );
+--
+-- CREATE TABLE pets (
+--                         id UUID NOT NULL PRIMARY KEY ,
+--                         name VARCHAR(100),
+--                         gender VARCHAR(100),
+--                         race VARCHAR(100) ,
+--                         ownerId UUID NOT NULL ,
+--                         FOREIGN KEY (ownerId)
+--                             REFERENCES persons(id)
+-- );
