@@ -23,20 +23,26 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private AppointmentConverter appointmentConverter;
+
     @GetMapping("appointments")
-    public List<Appointment> getAllAppointments(){
-        return appointmentService.getAllAppointments();
+    public List<AppointmentDto> getAllAppointments(){
+        List<Appointment> appointments = appointmentService.getAllAppointments();
+        return appointmentConverter.modelToDto(appointments);
     }
 
     @GetMapping("customers/{customerId}/appointments")
-    public List<Appointment> getAllAppointmentsByCustomer(@PathVariable UUID customerId){
+    public List<AppointmentDto> getAllAppointmentsByCustomer(@PathVariable UUID customerId){
         Customer customer = customerRepository.findById(customerId);
-        return appointmentService.getAllAppointmentsByCustomer(customer);
+        List<Appointment> appointments = appointmentService.getAllAppointmentsByCustomer(customer);
+        return appointmentConverter.modelToDto(appointments);
     }
 
     @GetMapping("customers/{customerId}/appointments/{appointmentId}")
-    public Appointment getAppointment(@PathVariable UUID appointmentId){
-        return appointmentService.getAppointmentById(appointmentId);
+    public AppointmentDto getAppointment(@PathVariable UUID appointmentId){
+        Appointment appointment = appointmentService.getAppointmentById(appointmentId);
+        return appointmentConverter.modelToDto(appointment);
     }
 
     @GetMapping("/customers/{customerId}/appointments/{appointmentId}/setSeen")
