@@ -28,7 +28,7 @@ public class PetController {
     }
 
     @GetMapping("customers/{customerId}/pets")
-    public List<PetDto> getAllPetsByPerson(@PathVariable UUID customerId){
+    public List<PetDto> getAllPetsByCustomer(@PathVariable UUID customerId){
         Customer customer = customerService.findById(customerId);
         List<Pet> pets = petService.findAllByCustomerId(customer);
         return petConverter.modelToDto(pets);

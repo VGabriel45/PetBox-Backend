@@ -20,4 +20,6 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     int getNumOfUnseenQuestions();
 
     List<Question> findAllByCustomer(Customer customer);
+
+    List<Question> findQuestionsByResponseIsNull();
 }

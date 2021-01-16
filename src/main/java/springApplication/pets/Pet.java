@@ -21,7 +21,6 @@ public class Pet {
     private String race;
     private String age;
     private String color;
-//    private String color;
 
     @ManyToOne
     private Customer customer;
