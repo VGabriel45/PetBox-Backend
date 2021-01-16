@@ -13,19 +13,25 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerConverter customerConverter;
+
     @GetMapping("/customers")
-    public List<Customer> getAllCustomers(){
-        return customerService.findAll();
+    public List<CustomerDto> getAllCustomers(){
+        List<Customer> customers = customerService.findAll();
+        return customerConverter.modelToDto(customers);
     }
 
     @GetMapping("/customers/lastCustomer")
-    public Customer getLastCustomer(){
-        return customerService.findLastCustomer();
+    public CustomerDto getLastCustomer(){
+        Customer customer = customerService.findLastCustomer();
+        return customerConverter.modelToDto(customer);
     }
 
     @GetMapping("/customers/{customerId}")
-    public Customer getCustomer(@PathVariable UUID customerId){
-        return customerService.findById(customerId);
+    public CustomerDto getCustomer(@PathVariable UUID customerId){
+        Customer customer = customerService.findById(customerId);
+        return customerConverter.modelToDto(customer);
     }
 
     @PostMapping("/customers")

@@ -1,7 +1,9 @@
 package springApplication.appointments;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import springApplication.customers.Customer;
 
 import javax.persistence.*;
@@ -9,7 +11,8 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "appointments")
 public class Appointment {

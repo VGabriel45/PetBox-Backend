@@ -1,13 +1,16 @@
 package springApplication.appointments;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import springApplication.customers.Customer;
 
 import javax.persistence.ManyToOne;
 import java.util.Date;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 public class AppointmentDto {
 
     private UUID id;
