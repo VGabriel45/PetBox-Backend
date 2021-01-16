@@ -17,20 +17,26 @@ public class QuestionController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private QuestionConverter questionConverter;
+
     @GetMapping("/questions")
-    public List<Question> getAllQuestions(){
-        return questionService.findAll();
+    public List<QuestionDto> getAllQuestions(){
+        List<Question> questions = questionService.findAll();
+        return questionConverter.modelToDto(questions);
     }
 
     @GetMapping("/customers/{customerId}/questions")
-    public List<Question> getAllQuestionsOfCustomer(@PathVariable UUID customerId){
+    public List<QuestionDto> getAllQuestionsOfCustomer(@PathVariable UUID customerId){
         Customer customer = customerService.findById(customerId);
-        return questionService.findAllByCustomer(customer);
+        List<Question> questions = questionService.findAllByCustomer(customer);
+        return questionConverter.modelToDto(questions);
     }
 
     @GetMapping("/customers/{customerId}/questions/{questionId}")
-    public Question getQuestionOfCustomer(@PathVariable UUID questionId){
-        return questionService.findById(questionId);
+    public QuestionDto getQuestionOfCustomer(@PathVariable UUID questionId){
+        Question question = questionService.findById(questionId);
+        return questionConverter.modelToDto(question);
     }
 
     @PostMapping("/customers/{customerId}/questions")
