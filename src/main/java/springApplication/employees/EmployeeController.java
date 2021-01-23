@@ -1,6 +1,7 @@
 package springApplication.employees;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,15 +16,20 @@ public class EmployeeController {
     private EmployeeConverter employeeConverter;
 
     @GetMapping("/employees")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<EmployeeDto> getAllEmployees(){
         List<Employee> employees = employeeService.findAll();
         return employeeConverter.modelToDto(employees);
     }
 
     @GetMapping("/employees/{employeeId}")
-    public EmployeeDto getEmployee(@PathVariable UUID employeeId){
-        Employee employee = employeeService.findById(employeeId);
-        return employeeConverter.modelToDto(employee);
+    public EmployeeDto getEmployee(@PathVariable UUID employeeId) throws Exception {
+        if (employeeService.findById(employeeId) == null){
+            throw new Exception("User does not exist");
+        } else {
+            Employee employee = employeeService.findById(employeeId);
+            return employeeConverter.modelToDto(employee);
+        }
     }
 
     @PostMapping("/employees")

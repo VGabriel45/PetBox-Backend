@@ -103,3 +103,4 @@ public final class PasswordGenerator {
         return new String(password);
     }
 }
+

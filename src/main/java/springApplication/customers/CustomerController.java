@@ -42,8 +42,11 @@ public class CustomerController {
     @PutMapping("/customers/{personId}")
     public void updateCustomer(@RequestBody Customer customer){
         Customer updatedCustomer = customerService.findById(customer.getId());
-        customer.setFirstName(customer.getFirstName());
-        customer.setLastName(customer.getLastName());
+        updatedCustomer.setFirstName(customer.getFirstName());
+        updatedCustomer.setLastName(customer.getLastName());
+        updatedCustomer.setAddress(customer.getAddress());
+        updatedCustomer.setAge(customer.getAge());
+        updatedCustomer.setPhoneNumber(customer.getPhoneNumber());
 
         customerService.saveCustomer(updatedCustomer);
     }
