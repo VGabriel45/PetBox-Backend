@@ -1,6 +1,7 @@
 package springApplication.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,8 +19,11 @@ import springApplication.auth.payload.response.MessageResponse;
 import springApplication.auth.repository.RoleRepository;
 import springApplication.auth.repository.UserRepository;
 import springApplication.security.jwt.JwtUtils;
+import springApplication.security.password.PasswordGenerator;
 import springApplication.security.services.UserDetailsImpl;
+import springApplication.util.EmailSender;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +49,9 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    PasswordGenerator.PasswordGeneratorBuilder passwordGeneratorBuilder = new PasswordGenerator.PasswordGeneratorBuilder();
+    String pass = passwordGeneratorBuilder.build().generate(6);
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -67,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -83,7 +90,7 @@ public class AuthController {
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(pass));
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -117,6 +124,7 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
+        EmailSender.send("vgabrielmarian21@gmail.com",pass);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

@@ -81,18 +81,11 @@ public final class PasswordGenerator {
 
         // Collect the categories to use.
         List<String> charCategories = new ArrayList<>(4);
-        if (useLower) {
+
             charCategories.add(LOWER);
-        }
-        if (useUpper) {
             charCategories.add(UPPER);
-        }
-        if (useDigits) {
             charCategories.add(DIGITS);
-        }
-        if (usePunctuation) {
             charCategories.add(PUNCTUATION);
-        }
 
         // Build the password.
         for (int i = 0; i < length; i++) {
@@ -100,6 +93,7 @@ public final class PasswordGenerator {
             int position = random.nextInt(charCategory.length());
             password.append(charCategory.charAt(position));
         }
+        System.out.println(password);
         return new String(password);
     }
 }
