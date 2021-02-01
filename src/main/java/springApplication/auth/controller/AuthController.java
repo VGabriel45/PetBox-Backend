@@ -1,7 +1,6 @@
 package springApplication.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,13 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springApplication.auth.models.ERole;
 import springApplication.auth.models.Role;
-import springApplication.auth.models.User;
 import springApplication.auth.payload.request.LoginRequest;
 import springApplication.auth.payload.request.SignupRequest;
 import springApplication.auth.payload.response.JwtResponse;
 import springApplication.auth.payload.response.MessageResponse;
 import springApplication.auth.repository.RoleRepository;
-import springApplication.auth.repository.UserRepository;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerRepository;
 import springApplication.security.jwt.JwtUtils;
@@ -90,10 +87,11 @@ public class AuthController {
         }
 
         // Create new user's account
-        Customer customer = new Customer(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(pass), signUpRequest.getAddress(), signUpRequest.getPhoneNumber(),
-                signUpRequest.getGender(), signUpRequest.getFirstName(), signUpRequest.getLastName());
+        Customer customer = new Customer( signUpRequest.getFirstName(), signUpRequest.getLastName(),
+                signUpRequest.getUsername(), signUpRequest.getEmail(),
+                encoder.encode(pass), signUpRequest.getAddress(),
+                signUpRequest.getPhoneNumber(),
+                signUpRequest.getGender());
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -127,7 +125,7 @@ public class AuthController {
 
         customer.setRoles(roles);
         customerRepository.save(customer);
-        EmailSender.send("vgabrielmarian21@gmail.com",pass);
+        EmailSender.send("vgabrielmarian21@gmail.com",customer,pass);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

@@ -1,5 +1,7 @@
 package springApplication.util;
 
+import springApplication.customers.Customer;
+
 import java.io.*;
 import java.util.*;
 import javax.servlet.*;
@@ -9,7 +11,7 @@ import javax.mail.internet.*;
 import javax.activation.*;
 
 public class EmailSender {
-    public static void send(String recipient, String password) throws MessagingException {
+    public static void send(String recipient, Customer customer, String password) throws MessagingException {
         System.out.println("Preparing to send email");
         Properties props = new Properties();
 
@@ -29,20 +31,20 @@ public class EmailSender {
             }
         });
 
-        Message message = prepareMessage(session, myEmail, recipient, password);
+        Message message = prepareMessage(session, myEmail, recipient, customer, password);
         assert message != null;
         Transport.send(message);
         System.out.println("Message sent");
 
     }
 
-    private static Message prepareMessage(Session session, String myEmail, String recipient, String password) {
+    private static Message prepareMessage(Session session, String myEmail, String recipient, Customer customer,String password) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             message.setSubject("Welcome to PetBox !");
-            message.setText("Hello and thank you for using PetBox, this is your password " + password);
+            message.setText("Hello " + customer.getUsername() +  " and thank you for using PetBox, this is your password " + password);
             return message;
         } catch (Exception e) {
             System.out.println("error");
