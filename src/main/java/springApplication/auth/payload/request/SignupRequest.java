@@ -14,6 +14,11 @@ import java.util.List;
 public class SignupRequest {
     private String username;
     private String email;
+    private String address;
+    private String phoneNumber;
+    private String gender;
+    private String firstName;
+    private String lastName;
     private String password;
     private List<String> roles;
 }

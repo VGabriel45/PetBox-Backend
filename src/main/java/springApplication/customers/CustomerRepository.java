@@ -18,4 +18,8 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
     @Query(
             value = "SELECT c FROM Customer c WHERE c.lastSeen in (SELECT max(lastSeen) FROM Customer)")
     Customer findLastCustomer();
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
 }

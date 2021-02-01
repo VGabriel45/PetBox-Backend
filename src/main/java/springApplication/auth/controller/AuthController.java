@@ -18,6 +18,8 @@ import springApplication.auth.payload.response.JwtResponse;
 import springApplication.auth.payload.response.MessageResponse;
 import springApplication.auth.repository.RoleRepository;
 import springApplication.auth.repository.UserRepository;
+import springApplication.customers.Customer;
+import springApplication.customers.CustomerRepository;
 import springApplication.security.jwt.JwtUtils;
 import springApplication.security.password.PasswordGenerator;
 import springApplication.security.services.UserDetailsImpl;
@@ -38,7 +40,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    CustomerRepository customerRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -75,22 +77,23 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (customerRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (customerRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
+        Customer customer = new Customer(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(pass));
+                encoder.encode(pass), signUpRequest.getAddress(), signUpRequest.getPhoneNumber(),
+                signUpRequest.getGender(), signUpRequest.getFirstName(), signUpRequest.getLastName());
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -122,8 +125,8 @@ public class AuthController {
             });
         }
 
-        user.setRoles(roles);
-        userRepository.save(user);
+        customer.setRoles(roles);
+        customerRepository.save(customer);
         EmailSender.send("vgabrielmarian21@gmail.com",pass);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
