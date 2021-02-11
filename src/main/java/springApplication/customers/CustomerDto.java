@@ -12,9 +12,10 @@ public class CustomerDto {
     private UUID id;
     private String firstName;
     private String lastName;
+    private String email;
     private String address;
     private String phoneNumber;
     private String gender;
     private Integer age;
-    private Date lastSeen = new Date();
+    private Date lastSeen;
 }

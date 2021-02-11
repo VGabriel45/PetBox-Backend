@@ -49,6 +49,7 @@ public class CustomerController {
         updatedCustomer.setAddress(customer.getAddress());
         updatedCustomer.setAge(customer.getAge());
         updatedCustomer.setPhoneNumber(customer.getPhoneNumber());
+        updatedCustomer.setGender(customer.getGender());
 
         customerService.saveCustomer(updatedCustomer);
     }

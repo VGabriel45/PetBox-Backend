@@ -31,7 +31,7 @@ public class Customer {
     private String phoneNumber;
     private String gender;
     private Integer age;
-    private Date lastSeen = new Date();
+    private Date lastSeen;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",

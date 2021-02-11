@@ -25,4 +25,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     List<Appointment> findAllByCustomerIs(Customer customer);
 
     Appointment findAppointmentByCustomerIsAndIdIs(Customer customer, UUID appointmentId);
+
+    void deleteAllByCustomerIs(Customer customer);
 }
