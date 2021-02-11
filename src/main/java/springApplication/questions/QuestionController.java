@@ -1,6 +1,7 @@
 package springApplication.questions;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerService;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
+@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 public class QuestionController {
 
     @Autowired
@@ -21,6 +24,7 @@ public class QuestionController {
     private QuestionConverter questionConverter;
 
     @GetMapping("/questions")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<QuestionDto> getAllQuestions(){
         List<Question> questions = questionService.findAll();
         return questionConverter.modelToDto(questions);
@@ -34,17 +38,20 @@ public class QuestionController {
     }
 
     @GetMapping("/customers/{customerId}/questions/{questionId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public QuestionDto getQuestionOfCustomer(@PathVariable UUID questionId){
         Question question = questionService.findById(questionId);
         return questionConverter.modelToDto(question);
     }
 
     @PostMapping("/customers/{customerId}/questions")
+    @PreAuthorize("hasRole('USER')")
     public void addQuestion(@RequestBody Question question){
         questionService.saveQuestion(question);
     }
 
     @PutMapping("/customers/{customerId}/questions/{questionId}")
+    @PreAuthorize("hasRole('USER')")
     public void updateQuestion(@PathVariable UUID questionId,@RequestBody Question question){
         Question updatedQuestion = questionService.findById(questionId);
 
@@ -84,6 +91,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/customers/{customerId}/questions/{questionId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public void deleteQuestion(@PathVariable UUID questionId){
         Question question = questionService.findById(questionId);
         questionService.deleteQuestion(question);

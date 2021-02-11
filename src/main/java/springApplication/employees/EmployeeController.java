@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -33,6 +34,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
+    @PreAuthorize("isAuthenticated()")
     public void addEmployee(@RequestBody Employee employee){
         employeeService.saveEmployee(employee);
     }
@@ -55,6 +57,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{employeeId}")
+    @PreAuthorize("isAuthenticated()")
     public void deleteEmployee(@PathVariable UUID employeeId){
         Employee employee = employeeService.findById(employeeId);
         employeeService.deleteEmployee(employee);

@@ -1,6 +1,7 @@
 package springApplication.pets;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerRepository;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+@CrossOrigin(origins = "*")
 public class PetController {
 
     @Autowired
@@ -22,6 +25,7 @@ public class PetController {
     private PetConverter petConverter;
 
     @GetMapping("pets")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<PetDto> getAllPets(){
         List<Pet> pets = petService.findAll();
         return petConverter.modelToDto(pets);
@@ -35,18 +39,21 @@ public class PetController {
     }
 
     @GetMapping("customers/{customerId}/pets/{petId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public PetDto getPet(@PathVariable UUID petId){
         Pet pet = petService.findById(petId);
         return petConverter.modelToDto(pet);
     }
 
     @PostMapping("customers/{customerId}/pets")
+    @PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
     public void addPet(@RequestBody Pet pet, @PathVariable UUID customerId){
         pet.setCustomer(customerService.findById(customerId));
         petService.savePet(pet);
     }
 
     @PutMapping("/customers/{customerId}/pets/{petId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updatePet(@PathVariable UUID petId, @RequestBody Pet pet){
         Pet updatedPet = petService.findById(petId);
         updatedPet.setName(pet.getName());
@@ -58,6 +65,7 @@ public class PetController {
     }
 
     @DeleteMapping("/customers/{customerId}/pets/{petId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deletePet(@PathVariable UUID petId){
         Pet pet = petService.findById(petId);
         petService.deletePet(pet);

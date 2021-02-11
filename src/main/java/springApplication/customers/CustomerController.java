@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
+@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 public class CustomerController {
 
     @Autowired
