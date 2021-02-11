@@ -17,6 +17,7 @@ public class Pet {
     private UUID id;
 
     private String name;
+    private String picture;
     private String gender;
     private String race;
     private String age;

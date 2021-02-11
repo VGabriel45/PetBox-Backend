@@ -11,6 +11,7 @@ import java.util.UUID;
 public class PetDto {
     private UUID id;
     private String name;
+    private String picture;
     private String gender;
     private String race;
     private String age;
