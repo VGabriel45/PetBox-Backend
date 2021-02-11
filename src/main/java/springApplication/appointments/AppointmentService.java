@@ -30,8 +30,8 @@ public class AppointmentService {
         return appointmentRepository.findById(appointmentId);
     }
 
-    public void saveAppointment(Appointment updatedAppointment) {
-        appointmentRepository.save(updatedAppointment);
+    public void saveAppointment(Appointment appointment) {
+        appointmentRepository.save(appointment);
     }
 
     public int getNumOfUnseenAppointments() {

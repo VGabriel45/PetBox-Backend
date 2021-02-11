@@ -32,6 +32,12 @@ public class AppointmentController {
         return appointmentConverter.modelToDto(appointments);
     }
 
+    @PostMapping("customers/{customerId}/appointments")
+    public void addAppointment(@RequestBody Appointment appointment, @PathVariable UUID customerId){
+        appointment.setCustomer(customerRepository.findById(customerId));
+        appointmentService.saveAppointment(appointment);
+    }
+
     @GetMapping("customers/{customerId}/appointments")
     public List<AppointmentDto> getAllAppointmentsByCustomer(@PathVariable UUID customerId){
         Customer customer = customerRepository.findById(customerId);

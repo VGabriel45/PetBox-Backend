@@ -15,6 +15,7 @@ public class AppointmentDto {
 
     private UUID id;
     private Date dateOfAppointment;
+    private String hour;
     private boolean done = false;
     private boolean accepted = false;
     private boolean declined = false;
