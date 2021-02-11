@@ -46,7 +46,8 @@ public class QuestionController {
 
     @PostMapping("/customers/{customerId}/questions")
     @PreAuthorize("hasRole('USER')")
-    public void addQuestion(@RequestBody Question question){
+    public void addQuestion(@RequestBody Question question, @PathVariable UUID customerId){
+        question.setCustomer(customerService.findById(customerId));
         questionService.saveQuestion(question);
     }
 
