@@ -15,7 +15,7 @@ public class QuestionService {
 
 
     public List<Question> findAll() {
-        return questionRepository.findQuestionsByResponseIsNull();
+        return questionRepository.findAll();
     }
 
     public List<Question> findAllByCustomer(Customer customer) {

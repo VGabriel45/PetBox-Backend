@@ -37,4 +37,8 @@ public class AppointmentService {
     public int getNumOfUnseenAppointments() {
         return appointmentRepository.getNumOfUnseenAppointments();
     }
+
+    public void deleteAppointment(Appointment appointmentToDelete) {
+        appointmentRepository.delete(appointmentToDelete);
+    }
 }

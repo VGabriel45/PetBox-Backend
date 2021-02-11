@@ -26,7 +26,7 @@ public class AppointmentController {
     @Autowired
     private AppointmentConverter appointmentConverter;
 
-    @GetMapping("appointments")
+    @GetMapping("/appointments")
     public List<AppointmentDto> getAllAppointments(){
         List<Appointment> appointments = appointmentService.getAllAppointments();
         return appointmentConverter.modelToDto(appointments);
@@ -77,5 +77,11 @@ public class AppointmentController {
         updatedAppointment.setDeclined(true);
         updatedAppointment.setAccepted(false);
         appointmentService.saveAppointment(updatedAppointment);
+    }
+
+    @DeleteMapping("/customers/{customerId}/appointments/{appointmentId}")
+    public void deleteAppointment(@PathVariable UUID customerId, @PathVariable UUID appointmentId){
+        Appointment appointmentToDelete= appointmentService.findByCustomerAndAppointmentId(customerRepository.findById(customerId),appointmentId);
+        appointmentService.deleteAppointment(appointmentToDelete);
     }
 }
