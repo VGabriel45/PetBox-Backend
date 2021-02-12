@@ -18,6 +18,7 @@ public class Pet {
 
     private String name;
     private String picture;
+    private String type;
     private String gender;
     private String race;
     private String age;
