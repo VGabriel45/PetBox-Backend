@@ -1,6 +1,8 @@
 package springApplication.questions;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springApplication.customers.Customer;
@@ -72,14 +74,22 @@ public class QuestionController {
         questionService.saveQuestion(updatedQuestion);
     }
 
-    @GetMapping("/customers/{customerId}/questions/{questionId}/setResponse")
-    public void setResponse(@PathVariable UUID questionId, @RequestBody String response){
+    @PutMapping("/customers/{customerId}/questions/{questionId}/setResponse")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void setResponse(@PathVariable UUID questionId, @RequestBody Question question){
         Question updatedQuestion = questionService.findById(questionId);
-        updatedQuestion.setResponse(response);
+        updatedQuestion.setResponse(question.getResponse());
+        updatedQuestion.setAuthor(question.getAuthor());
+        updatedQuestion.setDate(question.getDate());
+        updatedQuestion.setCustomer(question.getCustomer());
+        updatedQuestion.setSolved(question.isSolved());
+        updatedQuestion.setSeen(question.isSeen());
+        updatedQuestion.setText(question.getText());
         questionService.saveQuestion(updatedQuestion);
     }
 
-    @GetMapping("/customers/{customerId}/questions/{questionId}/setSolved")
+    @PutMapping("/customers/{customerId}/questions/{questionId}/setSolved")
+    @PreAuthorize("hasRole('ADMIN')")
     public void markAsSolved(@PathVariable UUID questionId){
         Question updatedQuestion = questionService.findById(questionId);
         updatedQuestion.setSolved(true);
