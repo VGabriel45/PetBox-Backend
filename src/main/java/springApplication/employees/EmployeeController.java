@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
+@PreAuthorize("hasRole('ADMIN')")
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -34,7 +34,6 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    @PreAuthorize("isAuthenticated()")
     public void addEmployee(@RequestBody Employee employee){
         employeeService.saveEmployee(employee);
     }
@@ -43,21 +42,21 @@ public class EmployeeController {
     public void updateEmployee(@RequestBody Employee employee){
         Employee updatedEmployee = employeeService.findById(employee.getId());
 
-        employee.setFirstName(employee.getFirstName());
-        employee.setLastName(employee.getLastName());
-        employee.setAge(employee.getAge());
-        employee.setAddress(employee.getAddress());
-        employee.setContractStartingDate(employee.getContractStartingDate());
-        employee.setContractEndingDate(employee.getContractEndingDate());
-        employee.setRole(employee.getRole());
-        employee.setSalary(employee.getSalary());
-        employee.setGender(employee.getGender());
+        updatedEmployee.setFirstName(employee.getFirstName());
+        updatedEmployee.setLastName(employee.getLastName());
+        updatedEmployee.setAge(employee.getAge());
+        updatedEmployee.setAddress(employee.getAddress());
+        updatedEmployee.setContractStartingDate(employee.getContractStartingDate());
+        updatedEmployee.setContractEndingDate(employee.getContractEndingDate());
+        updatedEmployee.setRole(employee.getRole());
+        updatedEmployee.setSalary(employee.getSalary());
+        updatedEmployee.setGender(employee.getGender());
+        updatedEmployee.setEmail(employee.getEmail());
 
         employeeService.saveEmployee(updatedEmployee);
     }
 
     @DeleteMapping("/employees/{employeeId}")
-    @PreAuthorize("isAuthenticated()")
     public void deleteEmployee(@PathVariable UUID employeeId){
         Employee employee = employeeService.findById(employeeId);
         employeeService.deleteEmployee(employee);

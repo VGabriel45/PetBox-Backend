@@ -24,6 +24,7 @@ public class Employee {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String email;
     private Integer age;
     private String gender;
     private String role;
