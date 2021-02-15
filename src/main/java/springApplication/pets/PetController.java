@@ -3,6 +3,8 @@ package springApplication.pets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springApplication.Clinics.Clinic;
+import springApplication.Clinics.ClinicRepository;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerRepository;
 import springApplication.customers.CustomerService;
@@ -20,6 +22,9 @@ public class PetController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
 
     @Autowired
     private PetConverter petConverter;
@@ -45,9 +50,11 @@ public class PetController {
         return petConverter.modelToDto(pet);
     }
 
-    @PostMapping("customers/{customerId}/pets")
+    @PostMapping("/clinic/{clinicId}/customers/{customerId}/pets")
     @PreAuthorize("hasRole('ADMIN') and isAuthenticated()")
-    public void addPet(@RequestBody Pet pet, @PathVariable UUID customerId){
+    public void addPet(@RequestBody Pet pet, @PathVariable UUID customerId, @PathVariable UUID clinicId){
+        Clinic clinic = clinicRepository.findById(clinicId);
+        pet.setClinic(clinic);
         pet.setCustomer(customerService.findById(customerId));
         petService.savePet(pet);
     }

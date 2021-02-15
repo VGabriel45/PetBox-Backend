@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springApplication.Clinics.Clinic;
+import springApplication.Clinics.ClinicRepository;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerService;
 
@@ -21,6 +23,9 @@ public class QuestionController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
 
     @Autowired
     private QuestionConverter questionConverter;
@@ -44,6 +49,15 @@ public class QuestionController {
     public QuestionDto getQuestionOfCustomer(@PathVariable UUID questionId){
         Question question = questionService.findById(questionId);
         return questionConverter.modelToDto(question);
+    }
+
+    @PostMapping("/clinic/{clinicId}/customers/{customerId}/questions")
+    @PreAuthorize("hasRole('USER')")
+    public void addQuestionToClinic(@RequestBody Question question, @PathVariable UUID customerId, @PathVariable UUID clinicId){
+        Clinic clinic = clinicRepository.findById(clinicId);
+        question.setClinic(clinic);
+        question.setCustomer(customerService.findById(customerId));
+        questionService.saveQuestion(question);
     }
 
     @PostMapping("/customers/{customerId}/questions")

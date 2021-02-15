@@ -3,6 +3,8 @@ package springApplication.employees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springApplication.Clinics.Clinic;
+import springApplication.Clinics.ClinicRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +17,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeConverter employeeConverter;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
 
     @GetMapping("/employees")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -33,8 +38,10 @@ public class EmployeeController {
         }
     }
 
-    @PostMapping("/employees")
-    public void addEmployee(@RequestBody Employee employee){
+    @PostMapping("/clinic/{clinicId}/employees")
+    public void addEmployee(@RequestBody Employee employee, @PathVariable UUID clinicId){
+        Clinic clinic = clinicRepository.findById(clinicId);
+        employee.setClinic(clinic);
         employeeService.saveEmployee(employee);
     }
 

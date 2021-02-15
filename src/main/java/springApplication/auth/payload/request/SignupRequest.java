@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import springApplication.Clinics.Clinic;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public class SignupRequest {
     private String lastName;
     private String password;
     private List<String> roles;
+    private Clinic clinic;
 }

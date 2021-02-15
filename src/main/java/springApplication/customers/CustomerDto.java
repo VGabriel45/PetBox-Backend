@@ -2,6 +2,7 @@ package springApplication.customers;
 
 import lombok.Getter;
 import lombok.Setter;
+import springApplication.Clinics.Clinic;
 
 import java.util.Date;
 import java.util.UUID;
@@ -19,4 +20,5 @@ public class CustomerDto {
     private String gender;
     private Integer age;
     private Date lastSeen = new Date();
+    private Clinic clinic;
 }

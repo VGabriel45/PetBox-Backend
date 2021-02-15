@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -77,32 +78,8 @@ public class AuthController {
                 roles));
     }
 
-    @PostMapping("/clinic/signin")
-    public ResponseEntity<?> authenticateClinic(@Valid @RequestBody LoginRequest loginRequest) {
-
-        System.out.println(loginRequest.getUsername());
-        System.out.println(loginRequest.getPassword());
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles
-                ));
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException {
+    @PostMapping("/clinic/{clinicId}/signupCustomer")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, @PathVariable UUID clinicId) throws MessagingException {
         if (customerRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -116,11 +93,13 @@ public class AuthController {
         }
 
         // Create new user's account
+        Clinic clinic = clinicRepository.findById(clinicId);
         Customer customer = new Customer( signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getUsername(), signUpRequest.getEmail(),
                 encoder.encode(pass), signUpRequest.getAddress(),
                 signUpRequest.getPhoneNumber(),
                 signUpRequest.getGender());
+        customer.setClinic(clinic);
 
         List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -181,7 +160,7 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_CLINIC)
+            Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
