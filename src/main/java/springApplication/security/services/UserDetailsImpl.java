@@ -31,13 +31,6 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public UserDetailsImpl(UUID id, String username, String email, String password) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
     public static UserDetailsImpl build(Customer customer) {
         List<GrantedAuthority> authorities = customer.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
@@ -51,12 +44,17 @@ public class UserDetailsImpl implements UserDetails {
                 authorities);
     }
 
-    public static UserDetailsImpl build(Clinic clinic) {
+    public static UserDetailsImpl buildClinic(Clinic clinic) {
+        List<GrantedAuthority> authorities = clinic.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+
         return new UserDetailsImpl(
                 clinic.getId(),
                 clinic.getClinicName(),
                 clinic.getEmail(),
-                clinic.getClinicPassword()
+                clinic.getClinicPassword(),
+                authorities
                 );
     }
 

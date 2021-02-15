@@ -9,5 +9,5 @@ public interface ClinicRepository extends JpaRepository<Clinic, String> {
 
     boolean existsByEmail(String email);
 
-    Optional<Clinic> findByClinicName(String name);
+    Clinic findByClinicName(String name);
 }
