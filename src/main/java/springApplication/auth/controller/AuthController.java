@@ -49,7 +49,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     PasswordGenerator.PasswordGeneratorBuilder passwordGeneratorBuilder = new PasswordGenerator.PasswordGeneratorBuilder();
-    String pass = passwordGeneratorBuilder.build().generate(6);
+    String pass = passwordGeneratorBuilder.build().generate(12);
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {

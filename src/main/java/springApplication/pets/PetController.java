@@ -60,6 +60,9 @@ public class PetController {
         updatedPet.setRace(pet.getRace());
         updatedPet.setCustomer(pet.getCustomer());
         updatedPet.setGender(pet.getGender());
+        updatedPet.setAge(pet.getAge());
+        updatedPet.setColor(pet.getColor());
+        updatedPet.setType(pet.getType());
 
         petService.savePet(updatedPet);
     }
