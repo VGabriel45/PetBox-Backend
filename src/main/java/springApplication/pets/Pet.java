@@ -2,6 +2,7 @@ package springApplication.pets;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springApplication.Clinics.Clinic;
 import springApplication.customers.Customer;
 
 import javax.persistence.*;
@@ -26,5 +27,8 @@ public class Pet {
 
     @ManyToOne
     private Customer customer;
+
+    @ManyToOne
+    private Clinic clinic;
 
 }

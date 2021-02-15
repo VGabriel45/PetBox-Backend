@@ -4,11 +4,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import springApplication.Clinics.Clinic;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -32,5 +30,8 @@ public class Employee {
     private Date contractStartingDate;
     private Date contractEndingDate;
     private String salary;
+
+    @ManyToOne
+    private Clinic clinic;
 
 }

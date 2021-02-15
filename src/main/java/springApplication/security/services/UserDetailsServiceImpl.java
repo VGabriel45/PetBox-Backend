@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import springApplication.Clinics.Clinic;
+import springApplication.Clinics.ClinicRepository;
 import springApplication.customers.Customer;
 import springApplication.customers.CustomerRepository;
 
@@ -15,13 +17,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    ClinicRepository clinicRepository;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        Clinic clinic = clinicRepository.findByClinicName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-        return UserDetailsImpl.build(customer);
+        if (customer != null) {
+            return UserDetailsImpl.build(customer);
+        }
+        return UserDetailsImpl.build(clinic);
     }
 
 }

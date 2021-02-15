@@ -8,6 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import springApplication.Clinics.Clinic;
+import springApplication.Clinics.ClinicRepository;
 import springApplication.auth.models.ERole;
 import springApplication.auth.models.Role;
 import springApplication.auth.payload.request.LoginRequest;
@@ -40,6 +42,9 @@ public class AuthController {
     CustomerRepository customerRepository;
 
     @Autowired
+    ClinicRepository clinicRepository;
+
+    @Autowired
     RoleRepository roleRepository;
 
     @Autowired
@@ -70,6 +75,30 @@ public class AuthController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
+    }
+
+    @PostMapping("/clinic/signin")
+    public ResponseEntity<?> authenticateClinic(@Valid @RequestBody LoginRequest loginRequest) {
+
+        System.out.println(loginRequest.getUsername());
+        System.out.println(loginRequest.getPassword());
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles
+                ));
     }
 
     @PostMapping("/signup")
@@ -128,5 +157,59 @@ public class AuthController {
         EmailSender.send("vgabrielmarian21@gmail.com",customer,pass);
 
         return ResponseEntity.ok(new MessageResponse("Client registered successfully! A generated password has been sent to the client email address."));
+    }
+
+    @PostMapping("/clinic/signup")
+    public ResponseEntity<?> registerClinic(@Valid @RequestBody SignupRequest signUpRequest) throws MessagingException {
+        if (clinicRepository.existsByClinicName(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Clinic name is already taken!"));
+        }
+
+        if (clinicRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        // Create new user's account
+        Clinic clinic = new Clinic(signUpRequest.getUsername(),encoder.encode(signUpRequest.getPassword()),signUpRequest.getEmail());
+        System.out.println(clinic.getClinicPassword());
+
+        List<String> strRoles = signUpRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_CLINIC)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+
+                        break;
+                    case "mod":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
+
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        clinic.setRoles(roles);
+        clinicRepository.save(clinic);
+
+        return ResponseEntity.ok(new MessageResponse("Clinic registered successfully!"));
     }
 }

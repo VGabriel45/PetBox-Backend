@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import springApplication.Clinics.Clinic;
 import springApplication.customers.Customer;
 
 import javax.persistence.*;
@@ -43,5 +44,8 @@ public class Appointment {
 
     @ManyToOne
     private Customer customer;
+
+    @ManyToOne
+    private Clinic clinic;
 
 }

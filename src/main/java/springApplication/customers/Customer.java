@@ -3,6 +3,7 @@ package springApplication.customers;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import springApplication.Clinics.Clinic;
 import springApplication.auth.models.Role;
 import springApplication.security.password.PasswordGenerator;
 
@@ -50,14 +51,8 @@ public class Customer {
         this.gender = gender;
     }
 
-    //    public String getGeneratedPassword(){
-//        PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
-//                .useDigits(true)
-//                .useLower(true)
-//                .useUpper(true)
-//                .build();
-//        return passwordGenerator.generate(8);
-//    }
+    @ManyToOne
+    private Clinic clinic;
 
 }
 
