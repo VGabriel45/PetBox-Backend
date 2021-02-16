@@ -23,4 +23,6 @@ public interface PetRepository extends JpaRepository<Pet, String> {
     List<Pet> findAllByCustomer(Customer customer);
 
     List<Pet> findAllByCustomerIs(Customer customer);
+
+    List<Pet> findAllByClinicId(UUID clinicId);
 }

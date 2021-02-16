@@ -24,4 +24,6 @@ public interface QuestionRepository extends JpaRepository<Question, String> {
     List<Question> findQuestionsByResponseIsNull();
 
     List<Question> findAllByCustomerIs(Customer customer);
+
+    List<Question> findAllByClinicId(UUID clinicId);
 }

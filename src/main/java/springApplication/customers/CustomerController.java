@@ -24,6 +24,12 @@ public class CustomerController {
         return customerConverter.modelToDto(customers);
     }
 
+    @GetMapping("/clinic/{clinicId}/customers")
+    public List<CustomerDto> getAllCustomersByClinic(@PathVariable UUID clinicId){
+        List<Customer> customers = customerService.findAllByClinic(clinicId);
+        return customerConverter.modelToDto(customers);
+    }
+
     @GetMapping("/customers/lastCustomer")
     public CustomerDto getLastCustomer(){
         Customer customer = customerService.findLastCustomer();

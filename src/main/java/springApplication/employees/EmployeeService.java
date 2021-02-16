@@ -32,4 +32,8 @@ public class EmployeeService {
     public void deleteEmployee(Employee employee) {
         employeeRepository.delete(employee);
     }
+
+    public List<Employee> findAllByClinic(UUID clinicId) {
+        return employeeRepository.findAllByClinicId(clinicId);
+    }
 }

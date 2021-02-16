@@ -37,4 +37,8 @@ public class QuestionService {
     public void deleteQuestion(Question question) {
         questionRepository.delete(question);
     }
+
+    public List<Question> findAllByClinicId(UUID clinicId) {
+        return questionRepository.findAllByClinicId(clinicId);
+    }
 }

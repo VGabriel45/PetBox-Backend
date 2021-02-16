@@ -21,10 +21,20 @@ public class EmployeeController {
     @Autowired
     private ClinicRepository clinicRepository;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @GetMapping("/employees")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<EmployeeDto> getAllEmployees(){
         List<Employee> employees = employeeService.findAll();
+        return employeeConverter.modelToDto(employees);
+    }
+
+    @GetMapping("/clinic/{clinicId}/employees")
+    @PreAuthorize("hasRole('CLINIC') or hasRole('ADMIN')")
+    public List<EmployeeDto> getAllEmployeesByClinic(@PathVariable UUID clinicId){
+        List<Employee> employees = employeeService.findAllByClinic(clinicId);
         return employeeConverter.modelToDto(employees);
     }
 

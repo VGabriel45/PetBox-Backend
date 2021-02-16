@@ -22,9 +22,13 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
     Boolean existsByUsername(String username);
 
+    Boolean existsByClinicId(UUID clinicId);
+
     Boolean existsByEmail(String email);
 
     Optional<Customer> findByUsername(String username);
 
     Customer findByUsernameIs(String username);
+
+    List<Customer> findAllByClinicId(UUID clinicId);
 }

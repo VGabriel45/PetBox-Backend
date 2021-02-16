@@ -80,13 +80,13 @@ public class AuthController {
 
     @PostMapping("/clinic/{clinicId}/signupCustomer")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, @PathVariable UUID clinicId) throws MessagingException {
-        if (customerRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (customerRepository.existsByUsername(signUpRequest.getUsername()) && customerRepository.existsByClinicId(clinicId)) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (customerRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (customerRepository.existsByEmail(signUpRequest.getEmail()) && customerRepository.existsByClinicId(clinicId)) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));

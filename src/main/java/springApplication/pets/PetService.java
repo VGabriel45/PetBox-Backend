@@ -22,6 +22,10 @@ public class PetService {
         return petRepository.findAllByCustomer(customer);
     }
 
+    public List<Pet> findAllByClinicId(UUID clinicId) {
+        return petRepository.findAllByClinicId(clinicId);
+    }
+
     public Pet findById(UUID petId) {
         return petRepository.findById(petId);
     }

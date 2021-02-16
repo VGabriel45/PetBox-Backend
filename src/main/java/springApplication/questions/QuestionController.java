@@ -37,6 +37,13 @@ public class QuestionController {
         return questionConverter.modelToDto(questions);
     }
 
+    @GetMapping("clinic/{clinicId}/questions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<QuestionDto> getAllQuestionsByClinic(@PathVariable UUID clinicId){
+        List<Question> questions = questionService.findAllByClinicId(clinicId);
+        return questionConverter.modelToDto(questions);
+    }
+
     @GetMapping("/customers/{customerId}/questions")
     public List<QuestionDto> getAllQuestionsOfCustomer(@PathVariable UUID customerId){
         Customer customer = customerService.findById(customerId);

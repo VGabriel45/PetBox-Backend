@@ -41,4 +41,8 @@ public class AppointmentService {
     public void deleteAppointment(Appointment appointmentToDelete) {
         appointmentRepository.delete(appointmentToDelete);
     }
+
+    public List<Appointment> getAllAppointmentsByClinicId(UUID clinicId) {
+        return appointmentRepository.findAllByClinicId(clinicId);
+    }
 }
