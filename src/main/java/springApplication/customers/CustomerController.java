@@ -51,6 +51,8 @@ public class CustomerController {
     public void updateCustomer(@RequestBody Customer customer){
         Customer updatedCustomer = customerService.findById(customer.getId());
         updatedCustomer.setFirstName(customer.getFirstName());
+        updatedCustomer.setEmail(customer.getEmail());
+        updatedCustomer.setUsername(customer.getUsername());
         updatedCustomer.setLastName(customer.getLastName());
         updatedCustomer.setAddress(customer.getAddress());
         updatedCustomer.setAge(customer.getAge());
