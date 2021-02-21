@@ -23,17 +23,6 @@ public class Appointment {
     @Id
     @GeneratedValue
     private UUID id;
-//    SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
-//    private Date parsedDate;
-//
-//    {
-//        try {
-//            parsedDate = format.parse(getDateOfAppointment());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private Date dateOfAppointment;
     private String hour;
     private boolean done = false;
