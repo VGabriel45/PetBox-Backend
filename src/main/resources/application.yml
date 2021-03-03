@@ -1,6 +1,22 @@
-app:
-  datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/vetdb
-    username: gabi
-    password: 123
-    poll-size: 30
+cloud:
+  aws:
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+    region:
+      static: eu-central-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: petbox-images
+
+server:
+  port: 8080
+
+  spring:
+    http:
+      multipart:
+        max-file-size: 500MB
+        max-request-size: 900MB
