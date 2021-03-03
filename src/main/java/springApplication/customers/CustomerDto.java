@@ -19,6 +19,7 @@ public class CustomerDto {
     private String phoneNumber;
     private String gender;
     private Integer age;
+    private byte[] image;
     private Date lastSeen = new Date();
     private Clinic clinic;
 }
