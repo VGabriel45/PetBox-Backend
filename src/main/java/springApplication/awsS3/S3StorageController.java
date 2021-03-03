@@ -13,7 +13,7 @@ import springApplication.pets.PetRepository;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class S3StorageController {
 
     @Autowired
