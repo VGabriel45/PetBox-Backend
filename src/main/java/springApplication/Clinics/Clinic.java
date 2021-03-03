@@ -22,6 +22,7 @@ public class Clinic {
     private String clinicName;
     private String clinicPassword;
     private String email;
+    private byte[] logo;
 
     public Clinic(String clinicName, String password,String email) {
         this.clinicName = clinicName;
