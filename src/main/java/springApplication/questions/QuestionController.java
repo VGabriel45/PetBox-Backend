@@ -52,7 +52,6 @@ public class QuestionController {
     }
 
     @GetMapping("/customers/{customerId}/questions/{questionId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public QuestionDto getQuestionOfCustomer(@PathVariable UUID questionId){
         Question question = questionService.findById(questionId);
         return questionConverter.modelToDto(question);

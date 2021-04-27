@@ -133,7 +133,7 @@ public class AuthController {
 
         customer.setRoles(roles);
         customerRepository.save(customer);
-        EmailSender.send("vgabrielmarian21@gmail.com",customer,pass);
+        EmailSender.send(customer.getEmail(),customer,pass);
 
         return ResponseEntity.ok(new MessageResponse("Client registered successfully! A generated password has been sent to the client email address."));
     }

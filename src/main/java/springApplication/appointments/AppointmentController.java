@@ -40,7 +40,9 @@ public class AppointmentController {
 
     @PostMapping("customers/{customerId}/appointments")
     public void addAppointment(@RequestBody Appointment appointment, @PathVariable UUID customerId){
-        appointment.setCustomer(customerRepository.findById(customerId));
+        Customer customer = customerRepository.findById(customerId);
+        appointment.setCustomer(customer);
+        appointment.setClinic(customer.getClinic());
         appointmentService.saveAppointment(appointment);
     }
 
@@ -62,6 +64,7 @@ public class AppointmentController {
         Appointment updatedAppointment = appointmentService.getAppointmentById(appointmentId);
         updatedAppointment.setSeen(true);
         appointmentService.saveAppointment(updatedAppointment);
+        System.out.println("marking as seen");
     }
 
     @GetMapping("/appointments/seen")

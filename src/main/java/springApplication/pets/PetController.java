@@ -50,7 +50,6 @@ public class PetController {
     }
 
     @GetMapping("customers/{customerId}/pets/{petId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public PetDto getPet(@PathVariable UUID petId){
         Pet pet = petService.findById(petId);
         return petConverter.modelToDto(pet);
