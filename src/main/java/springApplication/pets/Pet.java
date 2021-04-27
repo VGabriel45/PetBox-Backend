@@ -24,6 +24,7 @@ public class Pet {
     private String race;
     private String age;
     private String color;
+    private byte[] image;
 
     @ManyToOne
     private Customer customer;

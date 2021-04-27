@@ -17,5 +17,6 @@ public class PetDto {
     private String race;
     private String age;
     private String color;
+    private byte[] image;
     private Customer customer;
 }
