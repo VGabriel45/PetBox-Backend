@@ -32,5 +32,4 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
     List<Customer> findAllByClinicId(UUID clinicId);
 
-    Customer findByName(String customerName);
 }
