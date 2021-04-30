@@ -30,9 +30,9 @@ public class CustomerController {
         return customerConverter.modelToDto(customers);
     }
 
-    @GetMapping("/customers/lastCustomer")
-    public CustomerDto getLastCustomer(){
-        Customer customer = customerService.findLastCustomer();
+    @GetMapping("/customers/lastCustomer/{clinicId}")
+    public CustomerDto getLastCustomer(@PathVariable UUID clinicId){
+        Customer customer = customerService.findLastCustomer(clinicId);
         return customerConverter.modelToDto(customer);
     }
 

@@ -35,8 +35,8 @@ public class CustomerService {
         return customerRepository.findAllByClinicId(clinicId);
     }
 
-    public Customer findLastCustomer() {
-        return customerRepository.findLastCustomer();
+    public Customer findLastCustomer(UUID clinicId) {
+        return customerRepository.findLastCustomer(clinicId);
     }
 
     public Customer findById(UUID customerId) {
