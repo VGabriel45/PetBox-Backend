@@ -56,4 +56,12 @@ public class CustomerService {
         questionRepository.deleteAll(questions);
         customerRepository.delete(customer);
     }
+
+    public Boolean existsByUsername(String username) {
+        return customerRepository.existsByUsername(username);
+    }
+
+    public Boolean existsByEmail(String email) {
+        return customerRepository.existsByEmail(email);
+    }
 }

@@ -67,4 +67,16 @@ public class CustomerController {
         Customer customer = customerService.findById(customerId);
         customerService.deleteCustomer(customer);
     }
+
+    // Form validations
+
+    @PostMapping("/customers/checkIfUsernameExists")
+    public Boolean checkIfUsernameExists(@RequestBody String username){
+        return customerService.existsByUsername(username);
+    }
+
+    @PostMapping("/customers/checkIfEmailExists")
+    public Boolean checkIfEmailExists(@RequestBody String email){
+        return customerService.existsByEmail(email);
+    }
 }
