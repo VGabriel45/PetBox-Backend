@@ -22,8 +22,9 @@ public class Clinic {
     private String clinicName;
     private String clinicPassword;
     private String email;
+    private String description;
 
-    public Clinic(String clinicName, String password,String email) {
+    public Clinic(String clinicName, String password, String email) {
         this.clinicName = clinicName;
         this.clinicPassword = password;
         this.email = email;
