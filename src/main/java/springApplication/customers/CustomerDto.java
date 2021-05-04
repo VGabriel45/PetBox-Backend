@@ -12,6 +12,7 @@ import java.util.UUID;
 public class CustomerDto {
     private UUID id;
     private String firstName;
+    private String password;
     private String lastName;
     private String username;
     private String email;
@@ -19,7 +20,7 @@ public class CustomerDto {
     private String phoneNumber;
     private String gender;
     private Integer age;
-    private byte[] image;
     private Date lastSeen = new Date();
     private Clinic clinic;
+    private Boolean agreed;
 }

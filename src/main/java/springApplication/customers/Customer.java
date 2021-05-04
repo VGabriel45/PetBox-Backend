@@ -52,8 +52,8 @@ public class Customer {
     private String phoneNumber;
     private String gender;
     private Integer age;
-    private byte[] image;
     private Date lastSeen = new Date();
+    private Boolean agreed;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
