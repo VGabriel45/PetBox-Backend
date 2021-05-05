@@ -44,7 +44,7 @@ public class EmailSender {
             message.setFrom(new InternetAddress(myEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             message.setSubject("Welcome to PetBox !");
-            message.setText("Hello " + customer.getFirstName() + " " + customer.getLastName() +  " and thank you for using PetBox, please login with this password " + password + " and this username " + customer.getUsername());
+            message.setText("Hello " + customer.getUsername() +  " and thank you for using PetBox, this is your password " + password);
             return message;
         } catch (Exception e) {
             System.out.println("error");
