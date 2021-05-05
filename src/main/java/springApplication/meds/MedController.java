@@ -42,7 +42,7 @@ public class MedController {
         medRepository.save(medicament);
     }
 
-    @DeleteMapping("/meds/pet/{petId}")
+    @DeleteMapping("/meds/{medId}")
     public void deleteMed(@PathVariable UUID medId){
         medRepository.deleteById(medId);
     }
