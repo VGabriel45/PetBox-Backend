@@ -1,0 +1,6 @@
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:8000/springdb
+    username: postgres
+    password: password
+    poll-size: 30
