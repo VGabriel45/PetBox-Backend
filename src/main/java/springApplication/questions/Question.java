@@ -18,7 +18,7 @@ public class Question {
     @GeneratedValue
     private UUID id;
     private Date date;
-    private boolean solved;
+    private Boolean solved;
     private String text;
     private String author;
     private boolean seen;

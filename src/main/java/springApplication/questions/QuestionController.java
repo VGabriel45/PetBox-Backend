@@ -79,7 +79,7 @@ public class QuestionController {
         Question updatedQuestion = questionService.findById(questionId);
 
         updatedQuestion.setDate(question.getDate());
-        updatedQuestion.setSolved(question.isSolved());
+        updatedQuestion.setSolved(question.getSolved());
         updatedQuestion.setText(question.getText());
         updatedQuestion.setSeen(question.isSeen());
         updatedQuestion.setResponse(question.getResponse());
@@ -102,18 +102,23 @@ public class QuestionController {
         updatedQuestion.setAuthor(question.getAuthor());
         updatedQuestion.setDate(question.getDate());
         updatedQuestion.setCustomer(question.getCustomer());
-        updatedQuestion.setSolved(question.isSolved());
-        updatedQuestion.setSeen(question.isSeen());
+        updatedQuestion.setSolved(question.getSolved());
+        updatedQuestion.setSeen(question.getSolved());
         updatedQuestion.setText(question.getText());
         questionService.saveQuestion(updatedQuestion);
     }
 
-    @PutMapping("/customers/{customerId}/questions/{questionId}/setSolved")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void markAsSolved(@PathVariable UUID questionId){
+    @GetMapping("/customers/{customerId}/questions/{questionId}/setSolved")
+    public Boolean markAsSolved(@PathVariable UUID questionId){
+        System.out.println("SOLVING PROBLEM");
         Question updatedQuestion = questionService.findById(questionId);
-        updatedQuestion.setSolved(true);
+        if (updatedQuestion.getSolved() == Boolean.TRUE){
+            updatedQuestion.setSolved(Boolean.FALSE);
+        } else {
+            updatedQuestion.setSolved(Boolean.TRUE);
+        }
         questionService.saveQuestion(updatedQuestion);
+        return updatedQuestion.getSolved();
     }
 
     @GetMapping("/questions/seen")

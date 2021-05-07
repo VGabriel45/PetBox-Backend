@@ -75,6 +75,7 @@ public class PetController {
         updatedPet.setAge(pet.getAge());
         updatedPet.setColor(pet.getColor());
         updatedPet.setType(pet.getType());
+        updatedPet.setWeight(pet.getWeight());
 
         petService.savePet(updatedPet);
     }
@@ -84,5 +85,65 @@ public class PetController {
     public void deletePet(@PathVariable UUID petId){
         Pet pet = petService.findById(petId);
         petService.deletePet(pet);
+    }
+
+    @GetMapping("/customers/{customerId}/pets/{petId}/hasVaccine")
+    public Boolean updatePetHasVaccine(@PathVariable UUID petId){
+        Pet updatedPet = petService.findById(petId);
+        if (updatedPet.getHasVaccine() == Boolean.TRUE){
+            updatedPet.setHasVaccine(Boolean.FALSE);
+        } else {
+            updatedPet.setHasVaccine(Boolean.TRUE);
+        }
+        petService.savePet(updatedPet);
+        return updatedPet.getHasVaccine();
+    }
+
+    @GetMapping("/customers/{customerId}/pets/{petId}/isSick")
+    public Boolean updatePetIsSick(@PathVariable UUID petId){
+        Pet updatedPet = petService.findById(petId);
+        if (updatedPet.getIsSick() == Boolean.TRUE){
+            updatedPet.setIsSick(Boolean.FALSE);
+        } else {
+            updatedPet.setIsSick(Boolean.TRUE);
+        }
+        petService.savePet(updatedPet);
+        return updatedPet.getIsSick();
+    }
+
+    @GetMapping("/customers/{customerId}/pets/{petId}/isAlergic")
+    public Boolean updatePetIsAlergic(@PathVariable UUID petId){
+        Pet updatedPet = petService.findById(petId);
+        if (updatedPet.getIsAlergic() == Boolean.TRUE){
+            updatedPet.setIsAlergic(Boolean.FALSE);
+        } else {
+            updatedPet.setIsAlergic(Boolean.TRUE);
+        }
+        petService.savePet(updatedPet);
+        return updatedPet.getIsAlergic();
+    }
+
+    @GetMapping("/customers/{customerId}/pets/{petId}/hasInjuries")
+    public Boolean updatePetHasInjuries(@PathVariable UUID petId){
+        Pet updatedPet = petService.findById(petId);
+        if (updatedPet.getHasInjuries() == Boolean.TRUE){
+            updatedPet.setHasInjuries(Boolean.FALSE);
+        } else {
+            updatedPet.setHasInjuries(Boolean.TRUE);
+        }
+        petService.savePet(updatedPet);
+        return updatedPet.getHasInjuries();
+    }
+
+    @GetMapping("/customers/{customerId}/pets/{petId}/hadInjuries")
+    public Boolean updatePetHadInjuries(@PathVariable UUID petId){
+        Pet updatedPet = petService.findById(petId);
+        if (updatedPet.getHadInjuries() == Boolean.TRUE){
+            updatedPet.setHadInjuries(Boolean.FALSE);
+        } else {
+            updatedPet.setHadInjuries(Boolean.TRUE);
+        }
+        petService.savePet(updatedPet);
+        return updatedPet.getHadInjuries();
     }
 }

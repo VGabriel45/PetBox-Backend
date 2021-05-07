@@ -2,6 +2,7 @@ package springApplication.pets;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import springApplication.Clinics.Clinic;
 import springApplication.customers.Customer;
 import springApplication.meds.Medicament;
@@ -28,12 +29,12 @@ public class Pet {
     private String race;
     private String age;
     private String color;
-    private Boolean hasVaccine;
+    private Boolean hasVaccine = false;
     private Date dateOfLastVaccine;
-    private Boolean isSick;
-    private Boolean hadInjuries;
-    private Boolean hasInjuries;
-    private Boolean isAlergic;
+    private Boolean isSick = false;
+    private Boolean hadInjuries = false;
+    private Boolean hasInjuries = false;
+    private Boolean isAlergic = false;
     private Integer weight;
     private byte[] image;
 

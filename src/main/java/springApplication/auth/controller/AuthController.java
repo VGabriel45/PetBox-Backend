@@ -1,8 +1,6 @@
 package springApplication.auth.controller;
-import com.twilio.twiml.voice.Sms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,8 +23,6 @@ import springApplication.security.jwt.JwtUtils;
 import springApplication.security.password.PasswordGenerator;
 import springApplication.security.services.UserDetailsImpl;
 import springApplication.util.EmailSender;
-import springApplication.util.EmailSenderV2;
-import springApplication.util.SmsSender;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -58,8 +54,6 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @Autowired
-    EmailSenderV2 emailSenderV2;
 
     PasswordGenerator.PasswordGeneratorBuilder passwordGeneratorBuilder = new PasswordGenerator.PasswordGeneratorBuilder();
     String pass = passwordGeneratorBuilder.build().generate(12);
@@ -140,10 +134,7 @@ public class AuthController {
 
         customer.setRoles(roles);
         customerRepository.save(customer);
-
         EmailSender.send(customer.getEmail(),customer,pass);
-        SmsSender.sendSms(pass);
-
         return ResponseEntity.ok(new MessageResponse("Client registered successfully! A generated password has been sent to the client email address."));
     }
 
